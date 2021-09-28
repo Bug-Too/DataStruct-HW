@@ -1,4 +1,4 @@
-package hw3;
+package classes;
 
 public class DoublyLinkedList {
     Node head;
@@ -6,97 +6,167 @@ public class DoublyLinkedList {
     String listName;
     
     public DoublyLinkedList(String name){
-
+        this.listName = name;
+        head.next = tail;
+        tail.previous = head;
     }
     
     public void popBack() {
       if (isEmpty()){
- 
+        System.out.println("ERROR");
         }else{
-
+            tail.previous.previous.next = tail;
+            tail.previous = tail.previous.previous;
         }
     }
     
     public void popFront(){
         if (isEmpty()){
- 
+            System.out.println("ERROR");
         }else{
-
+            head.next.next.previous = head;
+            head.next = head.next.next;
         }
     }
     
     public Node topFront(){
         if (isEmpty()){
-            return new Node();
+            System.out.println("ERROR");
+            return new Node("Empty List!");
         } else {
-            return new Node();
+            Node temp = head;
+            head = head.next;
+            return temp;
         }
     }
     
     public Node topBack(){
         if (isEmpty()){
-            return new Node();
+            System.out.println("ERROR");
+            return new Node("Empty List!");
         } else {
-            return new Node();
+            Node temp = tail;
+            popBack();
+            return temp;
         }
     }
     
     public void pushFront(Node node){
         if (isEmpty()){
-
+            head = node;
+            tail = node;
         }else{
+            node.next = head;
+            head = node;
             
         }
     }
     
     public void pushBack(Node node) {
         if (isEmpty()) {
-
+            head = node;
+            tail = node;
         } else {
-
+            tail.next = node;
         }
     }
 
     public Node findNode(int id){
         if (isEmpty()){
-            return new Node();
+            System.out.println("ERROR");
+            return new Node("Empty List!");
         } else {
-            return new Node();
+            Node current = head;
+            while (current.next != null) {
+                if (current.student_id == id) {
+                    return current;
+                }
+                current = current.next;
+            }
+            if (current.student_id == id) {
+                return current;
+            }
+            return new Node("Student Not Found!");
         }
     }
     
     public Node eraseNode(int id){
         if (isEmpty()){
-            return new Node();
+            System.out.println("ERROR");
+            return new Node("Empty List!");
         } else {
-            return new Node();
+            Node current = head;
+            Node temp = new Node();
+            while (current.next != null) {
+                if (current.student_id == id) {
+                    temp = current;
+                    current = null;
+                    return temp;
+                }
+                current = current.next;
+            }
+            if (current.student_id == id) {
+                temp = current;
+                current = null;
+                return temp;
+            }
+            return new Node("Student Not Found!");
         }
     }
     
     public void addNodeAfter(Node node1, Node node2){
-
+        node2.next = node1.next;
+        node1.next = node2;
     }
     
     public void addNodeBefore(Node node1, Node node2){
+        Node curr;
 
+        if (node1 == head) {
+            node2.next = node1;
+            head = node2;
+            return;
+        }
+
+        for (curr = head; curr.next.next != null; curr = curr.next) {
+            if (curr.next == node1) {
+                node2.next = node1;
+                curr.next = node2;
+            } 
+        }
+        
+        if (curr.next == node1) {
+            node2.next = node1;
+            curr.next = node2;
+        } 
     }
     
     public boolean isEmpty(){
-        return false;
+        return head == null;
     }
     public void merge(DoublyLinkedList list){
-        
+        tail.next = list.head;
+        tail = list.tail;
     }
     
     public void printStructure(){
-        System.out.println("Hello World!");
+        Node curr = head.next;
+        System.out.print(listName + ": head <-> ");
+        
+        while(curr != tail){
+            System.out.print("{" + curr.student_id + "} <-> ");
+            curr = curr.next;
+        }
+
+        System.out.println("tail");
     }
     
     // This may be useful for you for implementing printStructure()
     public void printStructureBackward(){ 
-        Node current=tail;
+        Node current = tail.previous;
         System.out.print(listName + ": tail <-> ");
-        while(current!=null){
+
+        while(current != head){
             System.out.print("{" + current.student_id + "} <-> ");
             current = current.previous;
         }
@@ -105,9 +175,19 @@ public class DoublyLinkedList {
     
     public Node whoGotHighestGPA(){
         if (isEmpty()) {
-            return new Node();
+            return new Node("Empty List!");
         } else {
-            return new Node();
+            Double gpa_max = head.gpa;
+            Node temp = null;
+
+            for (Node curr = head; curr != null; curr = curr.next) {
+                if (curr.gpa >= gpa_max) {
+                    gpa_max = curr.gpa;
+                    temp = curr;
+                }
+            }
+
+            return temp;
         }
     }
 }

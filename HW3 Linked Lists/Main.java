@@ -1,4 +1,4 @@
-package hw3;
+import classes.*;
 
 public class Main {
         public static void main(String[] args) {
@@ -9,5 +9,7 @@ public class Main {
         node = new Node();
         list1 = new SinglyLinkedList("Hello World!");
         list2 = new DoublyLinkedList("Hello World!");
+        list1.printStructure();
+        list2.printStructure();
     }
 }

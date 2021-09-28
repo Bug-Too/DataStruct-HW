@@ -1,4 +1,4 @@
-package hw3;
+package classes;
 
 public class Node {
     public int student_id;
@@ -10,11 +10,13 @@ public class Node {
     
     // Constructor 1
     public Node(int id, String name, double gpa){
-
-    }
+        this.student_id = id;
+        this.name = name;
+        this.gpa = gpa;
+        }
     // Constructor 2
     public Node(String name){
-
+        this.name = name;
     }
     // Constructor 3 (dummy)
     public Node(){
