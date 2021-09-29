@@ -20,7 +20,7 @@ public class Heap {
     }
 
     public Node top() {
-        return null; // FIX THIS
+        return arr[1]; // FIX THIS
     }
 
     public void push(Node node) {
@@ -36,30 +36,35 @@ public class Heap {
         // * Repeat the process until reaching the root or there is no swap (Pls use
         // while loop)
         // 3. Increase the heap size
+        if(size+1 == capacity){
+            return;
+        }
         arr[size + 1] = node;
         size++;
 
         if (isMinHeap) {
             // minheap
-            int current = size + 1;
-            while (size != 1) {
+            int current = size;
+            while (current > 1) {
                 if (arr[current].price < arr[current / 2].price) {
                     swap(current, current / 2);
+                    current = current / 2;
                 } else {
                     break;
                 }
-                current = current / 2;
+                
             }
         } else {
             // maxheap
-            int current = size + 1;
-            while (size != 1) {
+            int current = size;
+            while (current > 1) {
                 if (arr[current].price > arr[current / 2].price) {
                     swap(current, current / 2);
+                    current = current / 2;
                 } else {
                     break;
                 }
-                current = current / 2;
+                
             }
         }
 
@@ -76,6 +81,10 @@ public class Heap {
         // * Swap the current node with the lower priority child
         // * Repeat the process until the node has no child or there is no swap (Pls use
         // while loop)
+
+        if (size == 0) {
+            return null;
+        }
         Node temp = arr[1];
         arr[1] = arr[size];
         size--;
