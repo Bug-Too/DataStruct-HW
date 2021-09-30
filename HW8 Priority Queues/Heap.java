@@ -36,7 +36,7 @@ public class Heap {
         // * Repeat the process until reaching the root or there is no swap (Pls use
         // while loop)
         // 3. Increase the heap size
-        if(size+1 == capacity){
+        if (size + 1 == capacity) {
             return;
         }
         arr[size + 1] = node;
@@ -52,7 +52,7 @@ public class Heap {
                 } else {
                     break;
                 }
-                
+
             }
         } else {
             // maxheap
@@ -64,7 +64,7 @@ public class Heap {
                 } else {
                     break;
                 }
-                
+
             }
         }
 
@@ -82,117 +82,105 @@ public class Heap {
         // * Repeat the process until the node has no child or there is no swap (Pls use
         // while loop)
 
+        Node temp = null; // กำหนดให้ select เท่ากับ null
         if (size == 0) {
-            return null;
+            return temp;
         }
-        Node temp = arr[1];
-        arr[1] = arr[size];
-        size--;
 
-        if (isMinHeap) {
+        temp = arr[1];
+        if (size != 1)
+            arr[1] = arr[size--];
+        else
+            arr[size--] = null;
+        int current = 1;
+
+        if (isMinHeap) {// check minheap or maxheap
             // minheap
-            int current = 1;
-            while (arr[current * 2] != null || arr[current * 2 + 1] != null) {
-                if (arr[current * 2] != null && arr[current * 2 + 1] != null) { // not null both
-                    // child less than current ? swap : break
-                    if (arr[current].price >= arr[current * 2].price
-                            || arr[current].price >= arr[current * 2 + 1].price) {
-                        // check min price of cureent child and swap min child with current
-                        if (arr[current * 2].price < arr[current * 2 + 1].price) {
-                            swap(current, current * 2);
-                            current = current * 2;
-                        } else if (arr[current * 2].price > arr[current * 2 + 1].price) {
-                            swap(current, current * 2 + 1);
-                            current = current * 2 + 1;
-                        } else {
-                            if (arr[current * 2].timestamp < arr[current * 2 + 1].timestamp) {
-                                swap(current, current * 2);
-                                current = current * 2;
-                            } else {
-                                swap(current, current * 2 + 1);
-                                current = current * 2 + 1;
-                            }
-                        }
-                    } else {
-                        break;
-                    }
-                } else if (arr[current * 2 + 1] == null) { // left node != null
-                    if (arr[current].price > arr[current * 2].price) {
-                        // child less than current ? swap : break
-                        swap(current, current * 2);
-                        current = current * 2;
-                    } else {
-                        if (arr[current].price == arr[current * 2].price)
-                            swap(current, current * 2);
-                        break;
-                    }
-                } else if (arr[current * 2] == null) { // right node != null
-                    if (arr[current].price > arr[current * 2 + 1].price) {
-                        // child less than current ? swap : break
-                        swap(current, current * 2 + 1);
-                        current = current * 2 + 1;
-                    } else {
-                        if (arr[current].price == arr[current * 2 + 1].price)
-                            swap(current, current * 2 + 1);
-                        break;
-                    }
-                }
-            }
-        } else {
-            int current = 1;
-            while (arr[current * 2] != null || arr[current * 2 + 1] != null) {
-                if (arr[current * 2] != null && arr[current * 2 + 1] != null) { // not null both
-                    // child more than current ? swap : break
-                    if (arr[current].price <= arr[current * 2].price
-                            || arr[current].price <= arr[current * 2 + 1].price) {
-                        // check min price of cureent child and swap min child with current
-                        if (arr[current * 2].price > arr[current * 2 + 1].price) {
-                            swap(current, current * 2);
-                            current = current * 2;
-                        } else if (arr[current * 2].price < arr[current * 2 + 1].price) {
-                            swap(current, current * 2 + 1);
-                            current = current * 2 + 1;
-                        } else {
-                            if (arr[current * 2].timestamp < arr[current * 2 + 1].timestamp) {
-                                swap(current, current * 2);
-                                current = current * 2;
-                            } else {
-                                swap(current, current * 2 + 1);
-                                current = current * 2 + 1;
-                            }
-                        }
-                    } else {
+            // ค่าน้อยขึ้นบน
+            int min;
 
-                        break;
-                    }
-                } else if (arr[current * 2 + 1] == null) { // left node != null
-                    if (arr[current].price < arr[current * 2].price) {
-                        // child less than current ? swap : break
+            while (current < size) {
+                if (current * 2 == size) { // 1 child case
+                    if (arr[current].price >= arr[current * 2].price)
                         swap(current, current * 2);
-                        current = current * 2;
+                    break;
+                } else if (2 * current + 1 <= size) {// 2 children cases
+                    min = findmin(current * 2, current * 2 + 1);
+                    if (arr[current].price >= arr[min].price) {
+                        swap(current, min);
+                        current = min;
                     } else {
-                        if (arr[current].price == arr[current * 2].price)
-                            swap(current, current * 2);
                         break;
                     }
-                } else if (arr[current * 2] == null) { // right node != null
-                    if (arr[current].price < arr[current * 2 + 1].price) {
-                        // child less than current ? swap : break
-                        swap(current, current * 2 + 1);
-                        current = current * 2 + 1;
-                    } else {
-                        if (arr[current].price == arr[current * 2 + 1].price)
-                            swap(current, current * 2 + 1);
-                        break;
-                    }
+                } else {// 0 child
+                    break;
                 }
             }
+
+        } else {
+            // maxheap
+            // ค่ามากๆขึ้นบน
+            int max;
+            while (current < size) {
+                if (current * 2 == size) { // 1 child case
+                    if (arr[current].price <= arr[current * 2].price)
+                        swap(current, current * 2);
+                    break;
+                } else if (2 * current + 1 <= size) {// 2 children cases
+                    max = findmax(current * 2, current * 2 + 1);
+                    if (arr[current].price <= arr[max].price) {
+                        swap(current, max);
+                        current = max;
+                    } else {
+                        break;
+                    }
+                } else {
+                    break;
+                }
+            }
+
         }
 
         // maxheap
 
         return temp; // FIX THIS
 
+    }
+
+    public int findmin(int n1, int n2) {
+        Node N1 = arr[n1];
+        Node N2 = arr[n2];
+
+        if (N1.price == N2.price) {
+            if (N1.timestamp < N2.timestamp)
+                return n1;
+            else
+                return n2;
+        } else {
+            if (N1.price < N2.price) {
+                return n1;
+            } else {
+                return n2;
+            }
+        }
+    }
+
+    public int findmax(int n1, int n2) {
+        Node N1 = arr[n1];
+        Node N2 = arr[n2];
+
+        if (N1.price == N2.price) {
+            if (N1.timestamp < N2.timestamp)
+                return n1;
+            else
+                return n2;
+        } else {
+            if (N1.price > N2.price) {
+                return n1;
+            } else {
+                return n2;
+            }
+        }
     }
 
     // This is an optional function, you may use it if you know what it is
